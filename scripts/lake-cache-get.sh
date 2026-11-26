@@ -20,7 +20,7 @@ for RH_PY_CANDIDATE in python3 python; do
   fi
 done
 if [[ -z "$RH_PY" ]]; then
-  RH_CACHE_PYTHON="$(command -v python3 >/dev/null && python3 --version 2>&1 || echo none)"
+  RH_CACHE_PYTHON="python3: $(command -v python3 >/dev/null && python3 --version 2>&1 || echo none); python: $(command -v python >/dev/null && python --version 2>&1 || echo none)"
   echo "lake exe cache get needs Python 3.11 or newer as python3 or python; found: $RH_CACHE_PYTHON" >&2
   exit 1
 fi
