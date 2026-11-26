@@ -15,6 +15,7 @@ def findBash : IO String := do
   unless System.Platform.isWindows do
     return "bash"
   for dir in System.SearchPath.parse ((← IO.getEnv "PATH").getD "") do
+    unless dir.isAbsolute do continue  -- an empty or relative entry would resolve against the cwd
     let bash := dir / "bash.exe"
     if !isWslLauncher bash && (← bash.pathExists) then
       return bash.toString
