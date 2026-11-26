@@ -10,10 +10,10 @@ process creation searches `System32` before `PATH`, so plain `bash` starts WSL, 
 neither Lake nor Windows' Python. Use `RH_CACHE_BASH` if it is set, else the first `bash.exe` on
 `PATH` that is not a WSL launcher, else `bin/bash.exe` of the Git for Windows that runs `git`. -/
 def findBash : IO String := do
-  if let some bash ← IO.getEnv "RH_CACHE_BASH" then
-    return bash
   unless System.Platform.isWindows do
     return "bash"
+  if let some bash ← IO.getEnv "RH_CACHE_BASH" then
+    return bash
   for dir in System.SearchPath.parse ((← IO.getEnv "PATH").getD "") do
     unless dir.isAbsolute do continue  -- an empty or relative entry would resolve against the cwd
     let bash := dir / "bash.exe"
